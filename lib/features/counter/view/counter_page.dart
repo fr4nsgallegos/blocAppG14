@@ -11,38 +11,42 @@ class CounterPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) => CounterBloc(),
-      child: Scaffold(
-        floatingActionButton: Column(
-          mainAxisAlignment: MainAxisAlignment.end,
-          children: [
-            FloatingActionButton(
-              heroTag: "inc",
-              onPressed: () {
-                context.read<CounterBloc>().add(CounterIncrementPressed());
-              },
-              child: Icon(Icons.add),
+      child: Builder(
+        builder: (context) {
+          return Scaffold(
+            floatingActionButton: Column(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                FloatingActionButton(
+                  heroTag: "inc",
+                  onPressed: () {
+                    context.read<CounterBloc>().add(CounterIncrementPressed());
+                  },
+                  child: Icon(Icons.add),
+                ),
+                SizedBox(height: 16),
+                FloatingActionButton(
+                  heroTag: "desc",
+                  onPressed: () {
+                    context.read<CounterBloc>().add(CounterDecrementPressed());
+                  },
+                  child: Icon(Icons.remove),
+                ),
+              ],
             ),
-            SizedBox(height: 16),
-            FloatingActionButton(
-              heroTag: "desc",
-              onPressed: () {
-                context.read<CounterBloc>().add(CounterDecrementPressed());
-              },
-              child: Icon(Icons.remove),
+            appBar: AppBar(title: Text("Counter Bloc")),
+            body: Center(
+              child: BlocBuilder<CounterBloc, CounterState>(
+                builder: (context, state) {
+                  return Text(
+                    "Valor: ${state.value}",
+                    style: TextStyle(fontSize: 28),
+                  );
+                },
+              ),
             ),
-          ],
-        ),
-        appBar: AppBar(title: Text("Counter Bloc")),
-        body: Center(
-          child: BlocBuilder<CounterBloc, CounterState>(
-            builder: (context, state) {
-              return Text(
-                "Valor: ${state.value}",
-                style: TextStyle(fontSize: 28),
-              );
-            },
-          ),
-        ),
+          );
+        },
       ),
     );
   }
